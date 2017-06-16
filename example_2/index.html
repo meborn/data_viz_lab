@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Skeleton file to explore data in Class 3">
+
+  <title>Data Reading &amp; Shaping</title>
+  <style>
+  </style>
+</head>
+<body>
+  <h1>Open the console to see stuff</h1>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script> 
+
+    // This is the code for the second example that we did in the lab today
+
+    d3.json('nations.json', function(error, nations) {
+      console.log('Original data');
+      console.log(nations);
+      var temp = []
+      nations.forEach(function(nation) {
+        var incomeByYear = nation.income.map(function(i) {
+          return {year: i[0], income: i[1]}
+        })
+        var lifeExpectancyByYear = nation.lifeExpectancy.map(function(i) {
+          return {year: i[0], lifeExpectancy: i[1]}
+        })
+        var populationByYear = nation.population.map(function(i) {
+          return {year: i[0], population: i[1]}
+        })
+        var nested = d3.nest()
+            .key(function(d) {
+              return d.year
+            })
+            .entries(
+              d3.merge([
+                  incomeByYear 
+                  , lifeExpectancyByYear 
+                  , populationByYear
+                ])
+            )
+        temp.push({nation: nation, grouped: nested});
+      });
+      console.log('new data we just made');
+      console.log(temp);  
+    });
+
+  </script>
+</body>

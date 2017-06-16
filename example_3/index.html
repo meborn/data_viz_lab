@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Skeleton file to explore data in Class 3">
+
+  <title>Data Reading &amp; Shaping</title>
+  <style>
+  </style>
+</head>
+<body>
+  <h1>Open the console to see stuff</h1>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script> 
+
+    // This is the code for the last example that we did in the lab today
+
+    d3.json('nations.json', function(error, nations) {
+      console.log('Original data');
+      console.log(nations);
+      // make an object where keys are years in the data with an empty array to put our nation data for that year
+      var endPoint = {}
+      var nationYears = nations.map(function(nation) {
+        var incomeMinMax = d3.extent(nation.income, function(i) {return i[0]})
+        var lifeMinMax = d3.extent(nation.lifeExpectancy, function(i) {return i[0]})
+        var popMinMax = d3.extent(nation.population, function(i) {return i[0]})
+        return d3.extent(d3.merge([incomeMinMax, lifeMinMax, popMinMax]))
+      })
+      var yearMinMax = d3.extent(d3.merge(nationYears))
+      for(var n=yearMinMax[0]; n<=yearMinMax[1]; ++n) {
+        endPoint[n] = ['put nation data for the year ' + n + ' here'];
+      }
+      console.log(endPoint);    
+    });
+
+  </script>
+</body>

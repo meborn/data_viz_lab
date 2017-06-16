@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Skeleton file to explore data in Class 3">
+
+  <title>Data Reading &amp; Shaping</title>
+  <style>
+  </style>
+</head>
+<body>
+  <h1>Open the console to see stuff</h1>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script> 
+
+    // This is the code for the first example that we did in the lab today
+
+    var selectByYear = function(nation, attr) {
+      // This function groups the attribute by year
+      return d3.nest()
+        .key(function(d){
+            return d[0];
+          })
+        .rollup(function(leaves) {
+            var temp = {}
+            temp[attr] = leaves[0][1]
+            return temp
+          })
+        .map(nation[attr])
+      ;
+    }
+
+
+    d3.json('nations.json', function(error, nations) {
+      console.log(nations);
+      nations.forEach(function(nation) {
+        var incomeByYear = selectByYear(nation,'income');
+        var lifeExpectancyByYear = selectByYear(nation,'lifeExpectancy');
+        var populationByYear = selectByYear(nation,'population');
+        console.log('***********************************')
+        console.log('Nation: ' + nation.name);
+        console.log('income by year')
+        console.log(incomeByYear)
+        console.log('life expectancy by year')
+        console.log(lifeExpectancyByYear);
+        console.log('population by year')
+        console.log(populationByYear);
+      });  
+    });
+
+  </script>
+</body>
